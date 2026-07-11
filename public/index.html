@@ -19,9 +19,15 @@
           </label>
           <button type="submit" class="primary-button">クイズに入る</button>
         </form>
-        <a class="text-link access-host-link" href="./host.html">司会者の方はこちら</a>
       </div>
     </section>
+
+    <div id="splashScreen" class="splash-screen hidden" aria-hidden="true">
+      <div class="splash-inner">
+        <p class="splash-eyebrow">Bunkasai Quiz Event</p>
+        <p class="splash-title">イマドキチェック</p>
+      </div>
+    </div>
 
     <main id="appShell" class="page hidden">
       <header class="page-header">
@@ -43,18 +49,12 @@
             <span id="statusText">待機中</span>
           </div>
         </div>
+        <h2 id="displayQuestion" class="quiz-headline">司会者が問題を開始すると、ここに現在のクイズが大きく表示されます。</h2>
         <div id="statusStrip" class="status-strip" data-status="lobby">
           <p id="statusHeadline" class="status-headline">待機中</p>
           <p id="statusDetail" class="status-detail">司会者が問題を開始するまで、このままお待ちください。</p>
         </div>
-        <h2 id="displayQuestion" class="quiz-headline">司会者が問題を開始すると、ここに現在のクイズが大きく表示されます。</h2>
         <div id="displayChoices" class="display-choices"></div>
-        <div id="timerWrap" class="timer-wrap" data-status="lobby">
-          <div class="timer-label"><span id="timerCaption">回答状況</span> <strong id="timerText">--</strong></div>
-          <div class="timer-bar">
-            <div id="timerBarFill" class="timer-bar-fill"></div>
-          </div>
-        </div>
       </section>
 
       <section class="answer-panel">
@@ -92,22 +92,6 @@
           </div>
           <ol id="leaderboard" class="leaderboard"></ol>
         </article>
-      </section>
-
-      <section class="host-entry">
-        <div class="section-heading compact">
-          <p class="section-kicker">運営用</p>
-          <h3>司会者の方へ</h3>
-        </div>
-        <p class="host-entry-copy">ここでコードを入れると、運営用の別ページに移動します。</p>
-        <form id="hostEntryForm" class="host-entry-form">
-          <label>
-            <span>司会者コード</span>
-            <input id="hostEntryCodeInput" type="password" placeholder="HOST_CODE を入力">
-          </label>
-          <button type="submit" class="secondary-button">運営ページへ</button>
-        </form>
-        <a class="text-link" href="./host.html">コード入力済みなら運営ページを開く</a>
       </section>
     </main>
 

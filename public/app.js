@@ -17,6 +17,7 @@ const siteConfig = normalizeSiteConfig(window.siteConfig || {});
 const state = {
   publicState: null,
   isPreview: false,
+  isSplashVisible: false,
   hasAccess: Boolean(localStorage.getItem("festival-quiz-player-name")),
   player: {
     id: localStorage.getItem("festival-quiz-player-id") || "",
@@ -28,6 +29,7 @@ const elements = {
   accessGate: document.getElementById("accessGate"),
   accessForm: document.getElementById("accessForm"),
   accessNameInput: document.getElementById("accessNameInput"),
+  splashScreen: document.getElementById("splashScreen"),
   appShell: document.getElementById("appShell"),
   eyebrow: document.getElementById("eyebrow"),
   title: document.getElementById("title"),
@@ -41,10 +43,6 @@ const elements = {
   questionMeta: document.getElementById("questionMeta"),
   displayQuestion: document.getElementById("displayQuestion"),
   displayChoices: document.getElementById("displayChoices"),
-  timerWrap: document.getElementById("timerWrap"),
-  timerCaption: document.getElementById("timerCaption"),
-  timerText: document.getElementById("timerText"),
-  timerBarFill: document.getElementById("timerBarFill"),
   joinForm: document.getElementById("joinForm"),
   nameInput: document.getElementById("nameInput"),
   playerIdentity: document.getElementById("playerIdentity"),
@@ -52,12 +50,8 @@ const elements = {
   responseSummary: document.getElementById("responseSummary"),
   resultBars: document.getElementById("resultBars"),
   leaderboard: document.getElementById("leaderboard"),
-  hostEntryForm: document.getElementById("hostEntryForm"),
-  hostEntryCodeInput: document.getElementById("hostEntryCodeInput"),
   toast: document.getElementById("toast")
 };
-
-let countdownTimer = null;
 
 bootstrap();
 
@@ -95,29 +89,16 @@ async function bootstrap() {
 }
 
 function bindEvents() {
-  elements.accessForm.addEventListener("submit", (event) => {
+  elements.accessForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const name = elements.accessNameInput.value.trim();
-    submitPlayerName(name, true);
+    await submitPlayerName(name, true);
   });
 
-  elements.joinForm.addEventListener("submit", (event) => {
+  elements.joinForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const name = elements.nameInput.value.trim();
-    submitPlayerName(name, false);
-  });
-
-  elements.hostEntryForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const code = elements.hostEntryCodeInput.value.trim();
-
-    if (!code) {
-      showToast("司会者コードを入力してください。", "error");
-      return;
-    }
-
-    localStorage.setItem("festival-quiz-host-code", code);
-    location.href = "./host.html";
+    await submitPlayerName(name, false);
   });
 }
 
@@ -139,7 +120,9 @@ function bindSocketEvents() {
     localStorage.setItem("festival-quiz-player-name", payload.name);
     elements.accessNameInput.value = payload.name;
     elements.nameInput.value = payload.name;
-    setAccessState(true);
+    if (!state.isSplashVisible) {
+      setAccessState(true);
+    }
     renderIdentity(payload.name, payload.score);
     showToast("参加しました。問題が始まるのを待ってください。", "success");
   });
@@ -189,7 +172,7 @@ function applyPreviewState() {
   renderPublicState();
 }
 
-function submitPlayerName(name, fromGate) {
+async function submitPlayerName(name, fromGate) {
   if (!name) {
     showToast("名前を入力してください。", "error");
     return;
@@ -205,6 +188,9 @@ function submitPlayerName(name, fromGate) {
   localStorage.setItem("festival-quiz-player-name", state.player.name);
   elements.accessNameInput.value = name;
   elements.nameInput.value = name;
+  if (fromGate) {
+    await playSplashScreen();
+  }
   setAccessState(true);
   renderIdentity(state.player.name, state.publicState?.you?.score ?? 0);
 
@@ -229,6 +215,7 @@ function renderPublicState() {
   }
 
   document.body.dataset.status = quiz.status;
+  document.body.dataset.questionType = quiz.currentQuestion?.category || "default";
   elements.title.textContent = siteConfig.branding.title || quiz.title;
   elements.subtitle.textContent = siteConfig.branding.subtitle;
   elements.participantCount.textContent = String(quiz.connectedParticipantCount);
@@ -238,7 +225,6 @@ function renderPublicState() {
   elements.statusText.dataset.status = quiz.status;
   elements.statusText.dataset.mode = mode;
   elements.statusStrip.dataset.status = mode;
-  elements.timerWrap.dataset.status = mode;
 
   renderDisplay(quiz);
   renderPlayer(quiz);
@@ -256,11 +242,10 @@ function renderDisplay(quiz) {
     elements.displayQuestion.textContent = "司会者が問題を開始すると、ここに現在のクイズが大きく表示されます。";
     elements.displayChoices.innerHTML = "";
     elements.responseSummary.textContent = "問題が始まると、ここに回答状況が表示されます。";
-    stopCountdown();
     return;
   }
 
-  elements.questionMeta.textContent = `Q${quiz.currentQuestionIndex + 1} / ${quiz.totalQuestions}`;
+  elements.questionMeta.textContent = `Q${quiz.currentQuestionIndex + 1} / ${quiz.totalQuestions} ・ ${questionCategoryLabel(question.category)}`;
   elements.displayQuestion.textContent = question.prompt;
   const disabled = !joined || quiz.status !== "question" || !question.acceptingAnswers;
   elements.displayChoices.innerHTML = question.choices
@@ -298,8 +283,6 @@ function renderDisplay(quiz) {
   } else {
     elements.responseSummary.textContent = "次の問題を待機しています。";
   }
-
-  syncCountdown(question, quiz.status);
 }
 
 function renderPlayer(quiz) {
@@ -400,33 +383,21 @@ function setAccessState(isOpen) {
   elements.appShell.classList.toggle("hidden", !isOpen);
 }
 
-function syncCountdown(question, quizStatus) {
-  stopCountdown();
+function playSplashScreen() {
+  state.isSplashVisible = true;
+  elements.splashScreen.setAttribute("aria-hidden", "false");
+  elements.splashScreen.classList.remove("hidden");
+  elements.splashScreen.classList.add("is-visible");
 
-  if (!question || quizStatus !== "question") {
-    const mode = quizStatus === "reveal" ? "reveal" : quizStatus === "finished" ? "finished" : "lobby";
-    elements.timerCaption.textContent = mode === "reveal" ? "正解発表" : mode === "finished" ? "クイズ終了" : "回答状況";
-    elements.timerText.textContent = mode === "reveal" ? "NOW" : mode === "finished" ? "END" : "--";
-    elements.timerBarFill.style.width = mode === "reveal" ? "100%" : mode === "finished" ? "100%" : "0%";
-    return;
-  }
-
-  if (!question.acceptingAnswers) {
-    elements.timerCaption.textContent = "回答状況";
-    elements.timerText.textContent = "CLOSED";
-    elements.timerBarFill.style.width = "100%";
-    return;
-  }
-  elements.timerCaption.textContent = "回答状況";
-  elements.timerText.textContent = "OPEN";
-  elements.timerBarFill.style.width = "100%";
-}
-
-function stopCountdown() {
-  if (countdownTimer) {
-    window.clearInterval(countdownTimer);
-    countdownTimer = null;
-  }
+  return new Promise((resolve) => {
+    window.setTimeout(() => {
+      elements.splashScreen.classList.remove("is-visible");
+      elements.splashScreen.classList.add("hidden");
+      elements.splashScreen.setAttribute("aria-hidden", "true");
+      state.isSplashVisible = false;
+      resolve();
+    }, 1000);
+  });
 }
 
 function applySiteConfig() {
@@ -519,7 +490,6 @@ function statusMode(quiz) {
 function renderStatusStrip(quiz, question) {
   const mode = statusMode(quiz);
   elements.statusStrip.dataset.status = mode;
-  elements.timerWrap.dataset.status = mode;
 
   if (!question) {
     elements.statusHeadline.textContent = "待機中";
@@ -529,20 +499,20 @@ function renderStatusStrip(quiz, question) {
 
   if (mode === "question") {
     elements.statusHeadline.textContent = "回答受付中";
-    elements.statusDetail.textContent = "いま回答できます。気になる選択肢を1つ選んでください。";
+    elements.statusDetail.textContent = `${questionCategoryLabel(question.category)}の問題です。いま回答できます。`;
     return;
   }
 
   if (mode === "locked") {
     elements.statusHeadline.textContent = "集計中";
-    elements.statusDetail.textContent = "回答受付は終了しました。まもなく正解が表示されます。";
+    elements.statusDetail.textContent = `${questionCategoryLabel(question.category)}を集計中です。まもなく正解が表示されます。`;
     return;
   }
 
   if (mode === "reveal") {
     const correctLabel = String.fromCharCode(65 + question.correctIndex);
     elements.statusHeadline.textContent = "正解発表";
-    elements.statusDetail.textContent = `正解は ${correctLabel} です。結果とランキングを確認できます。`;
+    elements.statusDetail.textContent = `${questionCategoryLabel(question.category)}の正解は ${correctLabel} です。`;
     return;
   }
 
@@ -565,4 +535,14 @@ function createPlayerId() {
   }
 
   return `player-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function questionCategoryLabel(category) {
+  if (category === "trend-song") {
+    return "流行りの曲チェック";
+  }
+  if (category === "retro-trend") {
+    return "昔の流行チェック";
+  }
+  return "今の流行チェック";
 }

@@ -75,6 +75,7 @@ function render() {
   }
 
   document.body.dataset.status = quiz.status;
+  document.body.dataset.questionType = quiz.currentQuestion?.category || "default";
   elements.title.textContent = quiz.title || siteConfig.branding.title;
 
   renderQuestion(quiz);
@@ -97,6 +98,7 @@ function renderQuestion(quiz) {
     : question.acceptingAnswers
       ? "回答受付中"
       : "集計中";
+  elements.kicker.textContent += ` ・ ${questionCategoryLabel(question.category)}`;
   elements.question.textContent = question.prompt;
   elements.choices.innerHTML = question.choices
     .map((choice, index) => {
@@ -132,4 +134,14 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function questionCategoryLabel(category) {
+  if (category === "trend-song") {
+    return "流行りの曲";
+  }
+  if (category === "retro-trend") {
+    return "昔の流行";
+  }
+  return "今の流行";
 }

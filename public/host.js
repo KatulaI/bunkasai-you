@@ -15,6 +15,7 @@ const elements = {
   questionEditorForm: document.getElementById("questionEditorForm"),
   editorPrompt: document.getElementById("editorPrompt"),
   editorChoices: document.getElementById("editorChoices"),
+  editorCategory: document.getElementById("editorCategory"),
   editorCorrectIndex: document.getElementById("editorCorrectIndex"),
   editorPoints: document.getElementById("editorPoints"),
   editorTimeLimit: document.getElementById("editorTimeLimit"),
@@ -149,6 +150,7 @@ function bindEvents() {
     elements.editorPrompt,
     elements.editorChoices,
     elements.editorCorrectIndex,
+    elements.editorCategory,
     elements.editorPoints,
     elements.editorTimeLimit,
     elements.editorExplanation
@@ -208,10 +210,14 @@ function renderHostState() {
   const quiz = state.publicState;
   const selectedQuestion = getSelectedQuestion();
   const currentMode = getQuizMode(quiz);
+  const activeCategory = quiz?.currentQuestion?.category || selectedQuestion?.category || "trend-expired";
+  document.body.dataset.questionType = activeCategory;
 
   renderStatusCard(quiz, currentMode);
 
-  elements.hostQuestionLabel.textContent = selectedQuestion ? `Q${(state.selectedQuestionIndex ?? 0) + 1}` : "-";
+  elements.hostQuestionLabel.textContent = selectedQuestion
+    ? `Q${(state.selectedQuestionIndex ?? 0) + 1} / ${questionCategoryLabel(selectedQuestion.category)}`
+    : "-";
   elements.hostLiveCount.textContent = String(quiz?.responseCount ?? 0);
 
   renderQuestionBank(host.questions);
@@ -228,6 +234,7 @@ function renderHostState() {
 
 function renderStatusCard(quiz, mode) {
   elements.hostStatusCard.dataset.mode = mode;
+  elements.hostStatusCard.dataset.questionType = quiz?.currentQuestion?.category || "trend-expired";
 
   if (!quiz?.currentQuestion) {
     elements.hostStatusLabel.textContent = "待機中";
@@ -260,8 +267,9 @@ function renderStatusCard(quiz, mode) {
 function renderQuestionBank(questions) {
   elements.questionBank.innerHTML = questions
     .map((question, index) => `
-      <button type="button" class="question-chip ${index === state.selectedQuestionIndex ? "is-selected" : ""}" data-question-index="${index}">
+      <button type="button" class="question-chip ${index === state.selectedQuestionIndex ? "is-selected" : ""}" data-question-index="${index}" data-category="${escapeHtml(question.category || "trend-expired")}">
         <strong>Q${index + 1}</strong>
+        <em class="question-chip-category">${escapeHtml(questionCategoryLabel(question.category))}</em>
         <span>${escapeHtml(question.prompt)}</span>
       </button>
     `)
@@ -294,6 +302,7 @@ function renderQuestionEditor(question) {
 
   elements.editorPrompt.value = question.prompt;
   elements.editorChoices.value = question.choices.join("\n");
+  elements.editorCategory.value = question.category || "trend-expired";
   elements.editorPoints.value = String(question.points ?? 100);
   elements.editorTimeLimit.value = String(question.timeLimit ?? 15);
   elements.editorExplanation.value = question.explanation || "";
@@ -336,6 +345,7 @@ function buildQuestionFromEditor(existingQuestion) {
   const prompt = elements.editorPrompt.value.trim();
   const choices = parseChoices(elements.editorChoices.value);
   const correctIndex = Number(elements.editorCorrectIndex.value);
+  const category = elements.editorCategory.value;
   const points = Number(elements.editorPoints.value || 100);
   const timeLimit = Number(elements.editorTimeLimit.value || 15);
   const explanation = elements.editorExplanation.value.trim();
@@ -358,6 +368,7 @@ function buildQuestionFromEditor(existingQuestion) {
   return {
     id: existingQuestion?.id || "",
     prompt,
+    category,
     choices,
     correctIndex,
     points: Number.isFinite(points) ? points : 100,
@@ -398,6 +409,16 @@ function getQuizMode(quiz) {
     return "locked";
   }
   return "lobby";
+}
+
+function questionCategoryLabel(category) {
+  if (category === "trend-song") {
+    return "流行り曲チェック";
+  }
+  if (category === "retro-trend") {
+    return "懐かし流行チェック";
+  }
+  return "今の流行チェック";
 }
 
 function loadSocketClient() {

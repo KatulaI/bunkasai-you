@@ -10,6 +10,7 @@ const { Server } = require("socket.io");
 const PORT = Number(process.env.PORT || 3000);
 const HOST_CODE = process.env.HOST_CODE || "bunkasai";
 const QUESTIONS_PATH = path.join(__dirname, "data", "questions.json");
+const QUESTION_CATEGORIES = new Set(["trend-expired", "trend-song", "retro-trend"]);
 
 const app = express();
 const server = http.createServer(app);
@@ -376,6 +377,7 @@ function createBlankQuestion(index = 0) {
   return validateQuestion({
     id: createQuestionId(),
     prompt: `新しい問題 ${index + 1}`,
+    category: "trend-expired",
     choices: ["選択肢A", "選択肢B"],
     correctIndex: 0,
     timeLimit: 15,
@@ -412,10 +414,12 @@ function validateQuestion(question, index = 0) {
 
   const timeLimit = Number(question.timeLimit || 15);
   const points = Number(question.points || 100);
+  const category = normalizeQuestionCategory(question.category);
 
   return {
     id: typeof question.id === "string" && question.id ? question.id : createQuestionId(),
     prompt: String(question.prompt || `問題 ${index + 1}`),
+    category,
     choices: question.choices.map((choice) => String(choice)),
     correctIndex: question.correctIndex,
     timeLimit: Number.isFinite(timeLimit) ? Math.max(5, Math.min(120, Math.round(timeLimit))) : 15,
@@ -426,6 +430,10 @@ function validateQuestion(question, index = 0) {
 
 function getCurrentQuestion() {
   return questions[quizState.currentQuestionIndex] || null;
+}
+
+function normalizeQuestionCategory(value) {
+  return QUESTION_CATEGORIES.has(value) ? value : "trend-expired";
 }
 
 function getAnswerMap(questionId) {
@@ -496,6 +504,7 @@ function buildPublicState(socket) {
       ? {
           id: question.id,
           prompt: question.prompt,
+          category: question.category,
           choices: question.choices,
           timeLimit: question.timeLimit,
           points: question.points,

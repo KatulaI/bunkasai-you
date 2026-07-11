@@ -1,6 +1,7 @@
 [
   {
     "id": "intro-1",
+    "category": "retro-trend",
     "prompt": "日本で一番面積が大きい都道府県はどこ？",
     "choices": ["北海道", "岩手県", "長野県", "福島県"],
     "correctIndex": 0,
@@ -10,6 +11,7 @@
   },
   {
     "id": "intro-2",
+    "category": "trend-expired",
     "prompt": "文化祭の定番メニューとしても人気の『たこ焼き』は、主にどの地域の名物？",
     "choices": ["東北", "関東", "関西", "九州"],
     "correctIndex": 2,
@@ -19,6 +21,7 @@
   },
   {
     "id": "intro-3",
+    "category": "trend-song",
     "prompt": "地球が太陽のまわりを1周するのにかかる時間として正しいのは？",
     "choices": ["約24時間", "約30日", "約365日", "約10年"],
     "correctIndex": 2,
