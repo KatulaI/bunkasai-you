@@ -83,6 +83,7 @@ function bindEvents() {
   });
 
   elements.openQuestionButton.addEventListener("click", () => {
+    state.pendingSelectedQuestionIndex = state.selectedQuestionIndex;
     socket.emit("host:open-question", { questionIndex: state.selectedQuestionIndex });
   });
 
@@ -95,6 +96,9 @@ function bindEvents() {
   });
 
   elements.nextQuestionButton.addEventListener("click", () => {
+    const currentIndex = state.publicState?.currentQuestionIndex ?? state.selectedQuestionIndex ?? 0;
+    const lastIndex = Math.max(0, (state.hostState.questions?.length ?? 1) - 1);
+    state.pendingSelectedQuestionIndex = Math.min(currentIndex + 1, lastIndex);
     socket.emit("host:next-question");
   });
 
