@@ -12,6 +12,8 @@ const elements = {
   hostLiveCount: document.getElementById("hostLiveCount"),
   questionBank: document.getElementById("questionBank"),
   questionImport: document.getElementById("questionImport"),
+  questionImportFile: document.getElementById("questionImportFile"),
+  fillImportTemplateButton: document.getElementById("fillImportTemplateButton"),
   questionEditorForm: document.getElementById("questionEditorForm"),
   editorPrompt: document.getElementById("editorPrompt"),
   editorChoices: document.getElementById("editorChoices"),
@@ -143,7 +145,28 @@ function bindEvents() {
   });
 
   elements.importQuestionsButton.addEventListener("click", () => {
-    socket.emit("host:import-questions", { rawJson: elements.questionImport.value });
+    importQuestionsFromText(elements.questionImport.value, "貼り付け内容");
+  });
+
+  elements.questionImportFile.addEventListener("change", async (event) => {
+    const [file] = Array.from(event.target.files || []);
+    if (!file) {
+      return;
+    }
+
+    try {
+      const text = await file.text();
+      importQuestionsFromText(text, file.name);
+    } catch (_error) {
+      showToast("ファイルを読み込めませんでした。", "error");
+    } finally {
+      event.target.value = "";
+    }
+  });
+
+  elements.fillImportTemplateButton.addEventListener("click", () => {
+    elements.questionImport.value = buildImportTemplate();
+    showToast("貼り付け用の見本を入れました。", "success");
   });
 
   [
@@ -382,6 +405,253 @@ function parseChoices(value) {
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter(Boolean);
+}
+
+function importQuestionsFromText(rawText, sourceLabel = "貼り付け内容") {
+  if (!String(rawText || "").trim()) {
+    showToast("読み込む内容を入力してください。", "error");
+    return;
+  }
+
+  try {
+    const rows = parseImportRows(rawText);
+    const questions = convertImportRowsToQuestions(rows);
+    socket.emit("host:import-questions", { rawJson: JSON.stringify(questions) });
+    showToast(`${questions.length}問を ${sourceLabel} から読み込みます。`, "success");
+  } catch (error) {
+    showToast(error.message, "error");
+  }
+}
+
+function parseImportRows(rawText) {
+  const normalized = String(rawText).replace(/^\uFEFF/, "").replace(/\r\n/g, "\n").trim();
+  if (!normalized) {
+    return [];
+  }
+
+  const lines = normalized.split("\n").filter((line) => line.trim());
+  const firstLine = lines[0] || "";
+  const delimiter = detectDelimiter(firstLine, normalized);
+  return parseDelimitedTable(normalized, delimiter)
+    .map((row) => row.map((cell) => cell.trim()))
+    .filter((row) => row.some(Boolean));
+}
+
+function detectDelimiter(firstLine, fullText) {
+  if (firstLine.includes("\t")) {
+    return "\t";
+  }
+
+  const commaCount = (fullText.match(/,/g) || []).length;
+  const semicolonCount = (fullText.match(/;/g) || []).length;
+  return semicolonCount > commaCount ? ";" : ",";
+}
+
+function parseDelimitedTable(rawText, delimiter) {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let inQuotes = false;
+
+  for (let index = 0; index < rawText.length; index += 1) {
+    const char = rawText[index];
+    const nextChar = rawText[index + 1];
+
+    if (char === "\"") {
+      if (inQuotes && nextChar === "\"") {
+        cell += "\"";
+        index += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+      continue;
+    }
+
+    if (char === delimiter && !inQuotes) {
+      row.push(cell);
+      cell = "";
+      continue;
+    }
+
+    if (char === "\n" && !inQuotes) {
+      row.push(cell);
+      rows.push(row);
+      row = [];
+      cell = "";
+      continue;
+    }
+
+    cell += char;
+  }
+
+  row.push(cell);
+  rows.push(row);
+  return rows;
+}
+
+function convertImportRowsToQuestions(rows) {
+  if (!rows.length) {
+    throw new Error("読み込める行がありません。");
+  }
+
+  const headerInfo = detectHeaderRow(rows[0]);
+  const dataRows = headerInfo.hasHeader ? rows.slice(1) : rows;
+
+  const questions = dataRows
+    .filter((row) => row.some(Boolean))
+    .map((row, index) => normalizeImportedQuestionRow(row, headerInfo, index))
+    .filter(Boolean);
+
+  if (!questions.length) {
+    throw new Error("問題が1問も見つかりませんでした。");
+  }
+
+  return questions;
+}
+
+function detectHeaderRow(row) {
+  const aliases = buildHeaderAliases();
+  const headerMap = {};
+  let matchedCount = 0;
+
+  row.forEach((cell, index) => {
+    const normalized = normalizeHeaderCell(cell);
+    const matchedKey = Object.keys(aliases).find((key) => aliases[key].includes(normalized));
+    if (matchedKey) {
+      headerMap[matchedKey] = index;
+      matchedCount += 1;
+    }
+  });
+
+  return {
+    hasHeader: matchedCount >= 3 || "prompt" in headerMap || "correct" in headerMap,
+    headerMap
+  };
+}
+
+function buildHeaderAliases() {
+  return {
+    prompt: ["問題文", "問題", "prompt", "question"],
+    choice1: ["選択肢1", "選択肢a", "choice1", "choicea", "a"],
+    choice2: ["選択肢2", "選択肢b", "choice2", "choiceb", "b"],
+    choice3: ["選択肢3", "選択肢c", "choice3", "choicec", "c"],
+    choice4: ["選択肢4", "選択肢d", "choice4", "choiced", "d"],
+    choice5: ["選択肢5", "選択肢e", "choice5", "choicee", "e"],
+    choice6: ["選択肢6", "選択肢f", "choice6", "choicef", "f"],
+    correct: ["正解", "correct", "answer", "正答"],
+    category: ["タイプ", "カテゴリ", "category", "genre", "種類"],
+    points: ["点数", "points", "score", "pt"],
+    timeLimit: ["秒数", "制限時間", "time", "timelimit", "time_limit"],
+    explanation: ["解説", "explanation", "comment", "補足"]
+  };
+}
+
+function normalizeHeaderCell(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[ _-]/g, "");
+}
+
+function normalizeImportedQuestionRow(row, headerInfo, index) {
+  const prompt = getImportedCell(row, headerInfo, "prompt", 0).trim();
+  if (!prompt) {
+    return null;
+  }
+
+  const choices = [];
+  for (let choiceIndex = 0; choiceIndex < 6; choiceIndex += 1) {
+    const choice = getImportedCell(row, headerInfo, `choice${choiceIndex + 1}`, choiceIndex + 1).trim();
+    if (choice) {
+      choices.push(choice);
+    }
+  }
+
+  if (choices.length < 2) {
+    throw new Error(`${index + 1}行目: 選択肢は2つ以上必要です。`);
+  }
+
+  const correctValue = getImportedCell(row, headerInfo, "correct", 5).trim();
+  const pointsValue = getImportedCell(row, headerInfo, "points", 7).trim();
+  const timeValue = getImportedCell(row, headerInfo, "timeLimit", 8).trim();
+
+  return {
+    prompt,
+    choices,
+    correctIndex: parseCorrectIndex(correctValue, choices, index),
+    category: normalizeImportedCategory(getImportedCell(row, headerInfo, "category", 6)),
+    points: parseOptionalNumber(pointsValue, 100, 10),
+    timeLimit: parseOptionalNumber(timeValue, 15, 5),
+    explanation: getImportedCell(row, headerInfo, "explanation", 9).trim()
+  };
+}
+
+function getImportedCell(row, headerInfo, key, fallbackIndex) {
+  const mappedIndex = headerInfo.headerMap[key];
+  const index = Number.isInteger(mappedIndex) ? mappedIndex : fallbackIndex;
+  return String(row[index] || "");
+}
+
+function parseCorrectIndex(value, choices, rowIndex) {
+  const trimmed = String(value || "").trim();
+  if (!trimmed) {
+    throw new Error(`${rowIndex + 1}行目: 正解を入れてください。`);
+  }
+
+  const letter = trimmed.toUpperCase();
+  if (/^[A-F]$/.test(letter)) {
+    const letterIndex = letter.charCodeAt(0) - 65;
+    if (letterIndex < choices.length) {
+      return letterIndex;
+    }
+  }
+
+  if (/^\d+$/.test(trimmed)) {
+    const numberValue = Number(trimmed);
+    if (numberValue >= 1 && numberValue <= choices.length) {
+      return numberValue - 1;
+    }
+    if (numberValue >= 0 && numberValue < choices.length) {
+      return numberValue;
+    }
+  }
+
+  const choiceIndex = choices.findIndex((choice) => choice === trimmed);
+  if (choiceIndex >= 0) {
+    return choiceIndex;
+  }
+
+  throw new Error(`${rowIndex + 1}行目: 正解は A / B / C / D か、選択肢番号で入れてください。`);
+}
+
+function normalizeImportedCategory(value) {
+  const text = String(value || "").trim().toLowerCase();
+  if (!text) {
+    return "trend-expired";
+  }
+  if (text.includes("song") || text.includes("曲")) {
+    return "trend-song";
+  }
+  if (text.includes("retro") || text.includes("昔") || text.includes("古") || text.includes("懐")) {
+    return "retro-trend";
+  }
+  return "trend-expired";
+}
+
+function parseOptionalNumber(value, fallbackValue, minValue) {
+  const numberValue = Number(value);
+  if (!Number.isFinite(numberValue)) {
+    return fallbackValue;
+  }
+  return Math.max(minValue, Math.round(numberValue));
+}
+
+function buildImportTemplate() {
+  return [
+    ["問題文", "選択肢1", "選択肢2", "選択肢3", "選択肢4", "正解", "タイプ", "点数", "秒数", "解説"].join("\t"),
+    ["今いちばん使われがちなSNSは？", "BeReal", "mixi", "前略プロフィール", "ガラケー掲示板", "A", "今", "100", "15", "最近のSNS感覚をチェックする問題です。"].join("\t"),
+    ["この中で最近の流行曲として最も近いものは？", "はいよろこんで", "世界に一つだけの花", "小さな恋のうた", "Runner", "A", "曲", "100", "15", "曲ジャンルの例です。"].join("\t")
+  ].join("\n");
 }
 
 function getSelectedQuestion() {
