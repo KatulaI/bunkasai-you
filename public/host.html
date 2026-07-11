@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>運営ページ | イマドキチェック</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body class="host-page">
+    <main class="page host-shell">
+      <header class="page-header host-header">
+        <div class="header-copy">
+          <p class="eyebrow">Bunkasai Quiz Event</p>
+          <h1 class="brand-title">司会者ページ</h1>
+          <p class="header-subtitle">進行操作はこのページだけで行えます。参加者向け画面とは分けて使ってください。</p>
+        </div>
+        <div class="host-header-links">
+          <a class="text-link" href="./index.html" target="_blank" rel="noopener noreferrer">参加者ページを開く</a>
+          <a class="text-link" href="./display.html" target="_blank" rel="noopener noreferrer">モニターページを開く</a>
+        </div>
+      </header>
+
+      <section id="toast" class="toast" aria-live="polite"></section>
+
+      <section id="hostLoginCard" class="host-login-card">
+        <div class="section-heading compact">
+          <p class="section-kicker">認証</p>
+          <h3>司会者認証</h3>
+        </div>
+        <form id="hostLoginForm" class="join-form host-login-form">
+          <label>
+            <span>司会者コード</span>
+            <input id="hostCodeInput" type="password" placeholder="HOST_CODE を入力">
+          </label>
+          <button type="submit" class="primary-button">ログイン</button>
+        </form>
+      </section>
+
+      <section id="hostControls" class="host-controls hidden">
+        <section class="host-summary-grid">
+          <article id="hostStatusCard" class="info-card host-status-card" data-mode="lobby">
+            <p class="summary-label">現在のステータス</p>
+            <strong id="hostStatusLabel" class="host-status-label">待機中</strong>
+            <p id="hostStatusDetail" class="host-status-detail">問題はまだ表示されていません。</p>
+          </article>
+          <article class="info-card">
+            <p class="summary-label">編集中の問題</p>
+            <strong id="hostQuestionLabel" class="summary-value">Q1</strong>
+          </article>
+          <article class="info-card">
+            <p class="summary-label">ライブ回答</p>
+            <strong id="hostLiveCount" class="summary-value">0</strong>
+          </article>
+        </section>
+
+        <section class="host-main-grid">
+          <article class="info-card">
+            <div class="section-heading compact">
+              <p class="section-kicker">進行</p>
+              <h3>進行操作</h3>
+            </div>
+            <div class="host-actions">
+              <button id="openQuestionButton" class="primary-button" type="button">この問題を開始</button>
+              <button id="closeAnswersButton" class="secondary-button" type="button">回答受付を終了</button>
+              <button id="revealAnswerButton" class="secondary-button" type="button">正解を発表</button>
+              <button id="nextQuestionButton" class="secondary-button" type="button">次の問題へ</button>
+              <button id="returnLobbyButton" class="ghost-button" type="button">待機画面に戻す</button>
+              <button id="resetQuizButton" class="ghost-button danger-button" type="button">得点をリセット</button>
+            </div>
+
+            <div class="question-bank-wrap">
+              <div class="section-heading compact inline-heading">
+                <div>
+                  <p class="section-kicker">問題一覧</p>
+                  <h3>問題リスト</h3>
+                </div>
+                <span class="muted">クリックで選択</span>
+              </div>
+              <div id="questionBank" class="question-bank"></div>
+            </div>
+          </article>
+
+          <article class="info-card">
+            <div class="host-side-stack">
+              <section class="host-subsection">
+                <div class="section-heading compact inline-heading">
+                  <div>
+                    <p class="section-kicker">表示確認</p>
+                    <h3>モニタープレビュー</h3>
+                  </div>
+                  <a class="text-link" href="./display.html" target="_blank" rel="noopener noreferrer">別タブで開く</a>
+                </div>
+                <div class="host-preview-frame">
+                  <iframe
+                    src="./display.html"
+                    title="モニター表示プレビュー"
+                    loading="lazy"
+                    referrerpolicy="no-referrer"
+                  ></iframe>
+                </div>
+              </section>
+
+              <section class="host-subsection">
+                <div class="section-heading compact">
+                  <p class="section-kicker">かんたん編集</p>
+                  <h3>問題を追加・編集</h3>
+                </div>
+                <form id="questionEditorForm" class="question-editor-form">
+                  <label>
+                    <span>問題文</span>
+                    <textarea id="editorPrompt" class="question-editor-textarea" rows="3" placeholder="ここに問題文を入力"></textarea>
+                  </label>
+
+                  <label>
+                    <span>選択肢</span>
+                    <textarea id="editorChoices" class="question-editor-textarea" rows="5" placeholder="1行に1つずつ入力&#10;例:&#10;BeReal&#10;Instagram&#10;TikTok"></textarea>
+                  </label>
+
+                  <div class="question-editor-meta">
+                    <label>
+                      <span>正解</span>
+                      <select id="editorCorrectIndex"></select>
+                    </label>
+                    <label>
+                      <span>得点</span>
+                      <input id="editorPoints" type="number" min="10" step="10" value="100">
+                    </label>
+                    <label>
+                      <span>目安秒数</span>
+                      <input id="editorTimeLimit" type="number" min="5" max="120" step="1" value="15">
+                    </label>
+                  </div>
+
+                  <label>
+                    <span>解説</span>
+                    <textarea id="editorExplanation" class="question-editor-textarea" rows="3" placeholder="正解発表のときに出す補足"></textarea>
+                  </label>
+                </form>
+                <div class="host-actions host-editor-actions">
+                  <button id="saveQuestionButton" class="primary-button" type="button">この問題を保存</button>
+                  <button id="addQuestionButton" class="secondary-button" type="button">新しい問題を追加</button>
+                  <button id="duplicateQuestionButton" class="secondary-button" type="button">複製する</button>
+                  <button id="deleteQuestionButton" class="ghost-button danger-button" type="button">削除する</button>
+                </div>
+              </section>
+
+              <section class="host-subsection">
+                <div class="section-heading compact">
+                  <p class="section-kicker">差し替え</p>
+                  <h3>問題セット差し替え</h3>
+                </div>
+                <p class="host-note">`prompt`, `choices`, `correctIndex`, `timeLimit`, `points`, `explanation` を持つ配列を貼り付けて読み込めます。</p>
+                <textarea id="questionImport" class="question-import" spellcheck="false"></textarea>
+                <button id="importQuestionsButton" class="secondary-button" type="button">問題JSONを読み込む</button>
+              </section>
+            </div>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <script src="./site-config.js"></script>
+    <script src="./host.js"></script>
+  </body>
+</html>

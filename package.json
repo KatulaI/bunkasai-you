@@ -1,0 +1,20 @@
+{
+  "name": "bunkasai-quiz-live",
+  "version": "1.0.0",
+  "description": "Realtime quiz website for a school festival stage event",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "quiz",
+    "socket.io",
+    "festival"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  }
+}

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>モニター表示 | イマドキチェック</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body class="display-screen">
+    <main class="display-page">
+      <header class="display-header">
+        <div>
+          <p class="display-eyebrow">Monitor View</p>
+          <h1 id="displayScreenTitle" class="display-brand display-site-title">イマドキチェック</h1>
+        </div>
+        <span id="displayScreenMeta" class="display-status-pill">開始待ち</span>
+      </header>
+
+      <section class="display-stage-simple">
+        <p id="displayScreenKicker" class="display-kicker">現在の問題</p>
+        <h2 id="displayScreenQuestion" class="display-stage-question">司会者が問題を開始すると、ここに問題が表示されます。</h2>
+        <div id="displayScreenChoices" class="display-stage-choices"></div>
+      </section>
+    </main>
+
+    <script src="./site-config.js"></script>
+    <script src="./display.js"></script>
+  </body>
+</html>
