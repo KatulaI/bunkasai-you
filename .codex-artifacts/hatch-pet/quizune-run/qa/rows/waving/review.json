@@ -1,0 +1,82 @@
+{
+  "ok": true,
+  "frames_root": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/waving/frames",
+  "states": [
+    "waving"
+  ],
+  "errors": [],
+  "warnings": [],
+  "rows": [
+    {
+      "state": "waving",
+      "expected_frames": 4,
+      "actual_frames": 4,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/waving/frames/waving/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15447,
+          "bbox": [
+            37,
+            5,
+            155,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 92
+        },
+        {
+          "index": 1,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/waving/frames/waving/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15900,
+          "bbox": [
+            27,
+            5,
+            165,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 82
+        },
+        {
+          "index": 2,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/waving/frames/waving/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15571,
+          "bbox": [
+            31,
+            5,
+            161,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 88
+        },
+        {
+          "index": 3,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/waving/frames/waving/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15248,
+          "bbox": [
+            37,
+            5,
+            154,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 78
+        }
+      ]
+    }
+  ]
+}

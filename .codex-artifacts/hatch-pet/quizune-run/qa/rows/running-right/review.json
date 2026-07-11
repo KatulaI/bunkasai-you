@@ -1,0 +1,142 @@
+{
+  "ok": true,
+  "frames_root": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/running-right/frames",
+  "states": [
+    "running-right"
+  ],
+  "errors": [],
+  "warnings": [],
+  "rows": [
+    {
+      "state": "running-right",
+      "expected_frames": 8,
+      "actual_frames": 8,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/running-right/frames/running-right/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 16396,
+          "bbox": [
+            25,
+            5,
+            166,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 248
+        },
+        {
+          "index": 1,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/running-right/frames/running-right/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 16722,
+          "bbox": [
+            15,
+            5,
+            176,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 238
+        },
+        {
+          "index": 2,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/running-right/frames/running-right/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 14586,
+          "bbox": [
+            27,
+            5,
+            165,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 188
+        },
+        {
+          "index": 3,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/running-right/frames/running-right/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 17516,
+          "bbox": [
+            16,
+            5,
+            176,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 249
+        },
+        {
+          "index": 4,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/running-right/frames/running-right/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 14540,
+          "bbox": [
+            27,
+            5,
+            165,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 195
+        },
+        {
+          "index": 5,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/running-right/frames/running-right/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 14666,
+          "bbox": [
+            25,
+            5,
+            166,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 220
+        },
+        {
+          "index": 6,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/running-right/frames/running-right/06.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15887,
+          "bbox": [
+            23,
+            5,
+            169,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 257
+        },
+        {
+          "index": 7,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/running-right/frames/running-right/07.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 17414,
+          "bbox": [
+            15,
+            5,
+            177,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 270
+        }
+      ]
+    }
+  ]
+}

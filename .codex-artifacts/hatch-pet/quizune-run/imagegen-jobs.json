@@ -21,7 +21,7 @@
     {
       "id": "idle",
       "kind": "row-strip",
-      "status": "pending",
+      "status": "complete",
       "prompt_file": "prompts/rows/idle.md",
       "retry_prompt_file": "prompts/row-retries/idle.md",
       "input_images": [
@@ -51,12 +51,14 @@
         "may_derive": false,
         "reason": "no deterministic derivation is configured for this state"
       },
-      "mirror_policy": {}
+      "mirror_policy": {},
+      "source_path": "/Users/keiisogae/.codex/generated_images/019f5142-6655-78f1-ae4e-219bde9f4984/call_2Z1Za7yPXvPinK0ODqfMRxIp.png",
+      "completed_at": "2026-07-11T13:01:53Z"
     },
     {
       "id": "running-right",
       "kind": "row-strip",
-      "status": "pending",
+      "status": "complete",
       "prompt_file": "prompts/rows/running-right.md",
       "retry_prompt_file": "prompts/row-retries/running-right.md",
       "input_images": [
@@ -86,12 +88,14 @@
         "may_derive": false,
         "reason": "no deterministic derivation is configured for this state"
       },
-      "mirror_policy": {}
+      "mirror_policy": {},
+      "source_path": "/Users/keiisogae/.codex/generated_images/019f5142-672b-71e0-89a7-94923f37e5d3/call_ASI8kBFJbg91T0JlPYCX0tcT.png",
+      "completed_at": "2026-07-11T13:00:48Z"
     },
     {
       "id": "running-left",
       "kind": "row-strip",
-      "status": "pending",
+      "status": "complete",
       "prompt_file": "prompts/rows/running-left.md",
       "retry_prompt_file": "prompts/row-retries/running-left.md",
       "input_images": [
@@ -136,12 +140,14 @@
         "derivation": "framewise-horizontal-mirror-preserving-order",
         "requires_explicit_approval": true,
         "fallback_generation_skill": "$imagegen"
-      }
+      },
+      "source_path": "/Users/keiisogae/.codex/generated_images/019f5144-db49-7853-99f2-56f0b6e95d79/call_pIH59RRt651uYIpQW9OTcqWa.png",
+      "completed_at": "2026-07-11T13:05:11Z"
     },
     {
       "id": "waving",
       "kind": "row-strip",
-      "status": "pending",
+      "status": "complete",
       "prompt_file": "prompts/rows/waving.md",
       "retry_prompt_file": "prompts/row-retries/waving.md",
       "input_images": [
@@ -171,12 +177,14 @@
         "may_derive": false,
         "reason": "state requires its own generated animation semantics"
       },
-      "mirror_policy": {}
+      "mirror_policy": {},
+      "source_path": "/Users/keiisogae/.codex/generated_images/019f5142-6f90-76f3-afd5-26ae936a0c2f/call_OwRnOxwB5ujwZ5ph7rvr6uWI.png",
+      "completed_at": "2026-07-11T13:01:14Z"
     },
     {
       "id": "jumping",
       "kind": "row-strip",
-      "status": "pending",
+      "status": "complete",
       "prompt_file": "prompts/rows/jumping.md",
       "retry_prompt_file": "prompts/row-retries/jumping.md",
       "input_images": [
@@ -206,12 +214,14 @@
         "may_derive": false,
         "reason": "state requires its own generated animation semantics"
       },
-      "mirror_policy": {}
+      "mirror_policy": {},
+      "source_path": "/Users/keiisogae/.codex/generated_images/019f5144-de22-7100-9a0b-6ce0e675fad3/call_Ce1jqtLsKtg8qTGug0cEcTWC.png",
+      "completed_at": "2026-07-11T13:04:23Z"
     },
     {
       "id": "failed",
       "kind": "row-strip",
-      "status": "pending",
+      "status": "complete",
       "prompt_file": "prompts/rows/failed.md",
       "retry_prompt_file": "prompts/row-retries/failed.md",
       "input_images": [
@@ -241,12 +251,14 @@
         "may_derive": false,
         "reason": "state requires its own generated animation semantics"
       },
-      "mirror_policy": {}
+      "mirror_policy": {},
+      "source_path": "/Users/keiisogae/.codex/generated_images/019f5145-5643-7e51-9ac9-c4b2c1be73da/call_X6Wc8uioQIgIUOCLWTKHaME7.png",
+      "completed_at": "2026-07-11T13:04:48Z"
     },
     {
       "id": "waiting",
       "kind": "row-strip",
-      "status": "pending",
+      "status": "complete",
       "prompt_file": "prompts/rows/waiting.md",
       "retry_prompt_file": "prompts/row-retries/waiting.md",
       "input_images": [
@@ -276,12 +288,14 @@
         "may_derive": false,
         "reason": "state requires its own generated animation semantics"
       },
-      "mirror_policy": {}
+      "mirror_policy": {},
+      "source_path": "/Users/keiisogae/.codex/generated_images/019f5148-b303-7e62-984b-9514ebc8030d/call_l4zuwIVKHDTZ7HHedtLEXZya.png",
+      "completed_at": "2026-07-11T13:08:29Z"
     },
     {
       "id": "running",
       "kind": "row-strip",
-      "status": "pending",
+      "status": "complete",
       "prompt_file": "prompts/rows/running.md",
       "retry_prompt_file": "prompts/row-retries/running.md",
       "input_images": [
@@ -311,12 +325,14 @@
         "may_derive": false,
         "reason": "state requires its own generated animation semantics"
       },
-      "mirror_policy": {}
+      "mirror_policy": {},
+      "source_path": "/Users/keiisogae/.codex/generated_images/019f5148-b386-7090-91d9-f8d14b246901/call_qh83VNPrwWLGeaSiltYhP9Zv.png",
+      "completed_at": "2026-07-11T13:09:00Z"
     },
     {
       "id": "review",
       "kind": "row-strip",
-      "status": "pending",
+      "status": "complete",
       "prompt_file": "prompts/rows/review.md",
       "retry_prompt_file": "prompts/row-retries/review.md",
       "input_images": [
@@ -346,7 +362,9 @@
         "may_derive": false,
         "reason": "state requires its own generated animation semantics"
       },
-      "mirror_policy": {}
+      "mirror_policy": {},
+      "source_path": "/Users/keiisogae/.codex/generated_images/019f5148-b430-7cd2-9c8f-6598e7cc885c/call_ug7rkBP2aIlUZx5D1R80k1Ev.png",
+      "completed_at": "2026-07-11T13:07:26Z"
     },
     {
       "id": "look-cardinals",

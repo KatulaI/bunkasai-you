@@ -1,0 +1,142 @@
+{
+  "ok": true,
+  "frames_root": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/failed/frames",
+  "states": [
+    "failed"
+  ],
+  "errors": [],
+  "warnings": [],
+  "rows": [
+    {
+      "state": "failed",
+      "expected_frames": 8,
+      "actual_frames": 8,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/failed/frames/failed/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 16220,
+          "bbox": [
+            26,
+            5,
+            166,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 127
+        },
+        {
+          "index": 1,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/failed/frames/failed/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 16589,
+          "bbox": [
+            27,
+            5,
+            165,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 151
+        },
+        {
+          "index": 2,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/failed/frames/failed/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15763,
+          "bbox": [
+            32,
+            5,
+            159,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 118
+        },
+        {
+          "index": 3,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/failed/frames/failed/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 17126,
+          "bbox": [
+            24,
+            5,
+            168,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 167
+        },
+        {
+          "index": 4,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/failed/frames/failed/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 16402,
+          "bbox": [
+            22,
+            5,
+            169,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 178
+        },
+        {
+          "index": 5,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/failed/frames/failed/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 17250,
+          "bbox": [
+            23,
+            5,
+            168,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 164
+        },
+        {
+          "index": 6,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/failed/frames/failed/06.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 16229,
+          "bbox": [
+            23,
+            5,
+            168,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 192
+        },
+        {
+          "index": 7,
+          "file": "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/failed/frames/failed/07.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 16423,
+          "bbox": [
+            28,
+            5,
+            163,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 154
+        }
+      ]
+    }
+  ]
+}

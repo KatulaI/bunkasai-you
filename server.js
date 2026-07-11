@@ -378,7 +378,7 @@ function createBlankQuestion(index = 0) {
     id: createQuestionId(),
     prompt: `新しい問題 ${index + 1}`,
     category: "trend-expired",
-    choices: ["選択肢A", "選択肢B"],
+    choices: ["選択肢A", "選択肢B", "選択肢C"],
     correctIndex: 0,
     timeLimit: 15,
     points: 100,
@@ -404,8 +404,8 @@ function validateQuestion(question, index = 0) {
     throw new Error(`${index + 1}問目の形式が不正です。`);
   }
 
-  if (!Array.isArray(question.choices) || question.choices.length < 2) {
-    throw new Error(`${index + 1}問目は選択肢が2つ以上必要です。`);
+  if (!Array.isArray(question.choices) || question.choices.length !== 3) {
+    throw new Error(`${index + 1}問目は選択肢が3つ必要です。`);
   }
 
   if (!Number.isInteger(question.correctIndex) || question.correctIndex < 0 || question.correctIndex >= question.choices.length) {

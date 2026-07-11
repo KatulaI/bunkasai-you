@@ -348,8 +348,8 @@ function syncCorrectOptions(preferredIndex = 0) {
   const choices = parseChoices(elements.editorChoices.value);
   const selectedIndex = Math.max(0, Math.min(preferredIndex, Math.max(choices.length - 1, 0)));
 
-  if (choices.length === 0) {
-    elements.editorCorrectIndex.innerHTML = "<option value=\"0\">選択肢を入力してください</option>";
+  if (choices.length !== 3) {
+    elements.editorCorrectIndex.innerHTML = "<option value=\"0\">選択肢を3つ入力してください</option>";
     elements.editorCorrectIndex.value = "0";
     return;
   }
@@ -378,8 +378,8 @@ function buildQuestionFromEditor(existingQuestion) {
     return null;
   }
 
-  if (choices.length < 2) {
-    showToast("選択肢は2つ以上入力してください。", "error");
+  if (choices.length !== 3) {
+    showToast("選択肢はちょうど3つ入力してください。", "error");
     return null;
   }
 
@@ -535,9 +535,6 @@ function buildHeaderAliases() {
     choice1: ["選択肢1", "選択肢a", "choice1", "choicea", "a"],
     choice2: ["選択肢2", "選択肢b", "choice2", "choiceb", "b"],
     choice3: ["選択肢3", "選択肢c", "choice3", "choicec", "c"],
-    choice4: ["選択肢4", "選択肢d", "choice4", "choiced", "d"],
-    choice5: ["選択肢5", "選択肢e", "choice5", "choicee", "e"],
-    choice6: ["選択肢6", "選択肢f", "choice6", "choicef", "f"],
     correct: ["正解", "correct", "answer", "正答"],
     category: ["タイプ", "カテゴリ", "category", "genre", "種類"],
     points: ["点数", "points", "score", "pt"],
@@ -560,29 +557,29 @@ function normalizeImportedQuestionRow(row, headerInfo, index) {
   }
 
   const choices = [];
-  for (let choiceIndex = 0; choiceIndex < 6; choiceIndex += 1) {
+  for (let choiceIndex = 0; choiceIndex < 3; choiceIndex += 1) {
     const choice = getImportedCell(row, headerInfo, `choice${choiceIndex + 1}`, choiceIndex + 1).trim();
     if (choice) {
       choices.push(choice);
     }
   }
 
-  if (choices.length < 2) {
-    throw new Error(`${index + 1}行目: 選択肢は2つ以上必要です。`);
+  if (choices.length !== 3) {
+    throw new Error(`${index + 1}行目: 選択肢は3つちょうど必要です。`);
   }
 
-  const correctValue = getImportedCell(row, headerInfo, "correct", 5).trim();
-  const pointsValue = getImportedCell(row, headerInfo, "points", 7).trim();
-  const timeValue = getImportedCell(row, headerInfo, "timeLimit", 8).trim();
+  const correctValue = getImportedCell(row, headerInfo, "correct", 4).trim();
+  const pointsValue = getImportedCell(row, headerInfo, "points", 6).trim();
+  const timeValue = getImportedCell(row, headerInfo, "timeLimit", 7).trim();
 
   return {
     prompt,
     choices,
     correctIndex: parseCorrectIndex(correctValue, choices, index),
-    category: normalizeImportedCategory(getImportedCell(row, headerInfo, "category", 6)),
+    category: normalizeImportedCategory(getImportedCell(row, headerInfo, "category", 5)),
     points: parseOptionalNumber(pointsValue, 100, 10),
     timeLimit: parseOptionalNumber(timeValue, 15, 5),
-    explanation: getImportedCell(row, headerInfo, "explanation", 9).trim()
+    explanation: getImportedCell(row, headerInfo, "explanation", 8).trim()
   };
 }
 
@@ -621,7 +618,7 @@ function parseCorrectIndex(value, choices, rowIndex) {
     return choiceIndex;
   }
 
-  throw new Error(`${rowIndex + 1}行目: 正解は A / B / C / D か、選択肢番号で入れてください。`);
+  throw new Error(`${rowIndex + 1}行目: 正解は A / B / C か、選択肢番号で入れてください。`);
 }
 
 function normalizeImportedCategory(value) {
@@ -648,9 +645,9 @@ function parseOptionalNumber(value, fallbackValue, minValue) {
 
 function buildImportTemplate() {
   return [
-    ["問題文", "選択肢1", "選択肢2", "選択肢3", "選択肢4", "正解", "タイプ", "点数", "秒数", "解説"].join("\t"),
-    ["今いちばん使われがちなSNSは？", "BeReal", "mixi", "前略プロフィール", "ガラケー掲示板", "A", "今", "100", "15", "最近のSNS感覚をチェックする問題です。"].join("\t"),
-    ["この中で最近の流行曲として最も近いものは？", "はいよろこんで", "世界に一つだけの花", "小さな恋のうた", "Runner", "A", "曲", "100", "15", "曲ジャンルの例です。"].join("\t")
+    ["問題文", "選択肢1", "選択肢2", "選択肢3", "正解", "タイプ", "点数", "秒数", "解説"].join("\t"),
+    ["今いちばん使われがちなSNSは？", "BeReal", "mixi", "前略プロフィール", "A", "今", "100", "15", "最近のSNS感覚をチェックする問題です。"].join("\t"),
+    ["この中で最近の流行曲として最も近いものは？", "はいよろこんで", "世界に一つだけの花", "小さな恋のうた", "A", "曲", "100", "15", "曲ジャンルの例です。"].join("\t")
   ].join("\n");
 }
 

@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "chroma_key": {
+    "hex": "#FF00FF",
+    "rgb": [
+      255,
+      0,
+      255
+    ],
+    "threshold": 96.0
+  },
+  "rows": [
+    {
+      "state": "waving",
+      "frames": [
+        "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/waving/frames/waving/00.png",
+        "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/waving/frames/waving/01.png",
+        "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/waving/frames/waving/02.png",
+        "/Users/keiisogae/Documents/\u30af\u30a4\u30ba\u30b5\u30a4\u30c8/.codex-artifacts/hatch-pet/quizune-run/qa/rows/waving/frames/waving/03.png"
+      ],
+      "method": "components"
+    }
+  ]
+}

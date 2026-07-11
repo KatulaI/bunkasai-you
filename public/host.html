@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>運営ページ | イマドキチェック</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
   </head>
   <body class="host-page">
@@ -113,7 +116,7 @@
 
                   <label>
                     <span>選択肢</span>
-                    <textarea id="editorChoices" class="question-editor-textarea" rows="5" placeholder="1行に1つずつ入力&#10;例:&#10;BeReal&#10;Instagram&#10;TikTok"></textarea>
+                    <textarea id="editorChoices" class="question-editor-textarea" rows="4" placeholder="1行に1つずつ、3つ入力&#10;例:&#10;BeReal&#10;Instagram&#10;TikTok"></textarea>
                   </label>
 
                   <div class="question-editor-meta">
@@ -160,14 +163,14 @@
                 <p class="host-note">スプレッドシートをそのまま貼り付けるか、`CSV / TSV` ファイルを選ぶだけで読み込めます。</p>
                 <div class="import-helper">
                   <p class="import-helper-title">列の順番</p>
-                  <p class="import-helper-copy">問題文 / 選択肢1 / 選択肢2 / 選択肢3 / 選択肢4 / 正解 / タイプ / 点数 / 秒数 / 解説</p>
+                  <p class="import-helper-copy">問題文 / 選択肢1 / 選択肢2 / 選択肢3 / 正解 / タイプ / 点数 / 秒数 / 解説</p>
                 </div>
                 <div class="host-actions host-import-actions">
                   <label class="secondary-button file-button" for="questionImportFile">CSV / TSVを選ぶ</label>
                   <input id="questionImportFile" class="hidden-file-input" type="file" accept=".csv,.tsv,text/csv,text/tab-separated-values">
                   <button id="fillImportTemplateButton" class="ghost-button" type="button">見本を入れる</button>
                 </div>
-                <textarea id="questionImport" class="question-import" spellcheck="false" placeholder="スプレッドシートの表をそのまま貼り付けできます&#10;例:&#10;問題文\t選択肢1\t選択肢2\t選択肢3\t選択肢4\t正解\tタイプ\t点数\t秒数\t解説"></textarea>
+                <textarea id="questionImport" class="question-import" spellcheck="false" placeholder="スプレッドシートの表をそのまま貼り付けできます&#10;例:&#10;問題文\t選択肢1\t選択肢2\t選択肢3\t正解\tタイプ\t点数\t秒数\t解説"></textarea>
                 <button id="importQuestionsButton" class="secondary-button" type="button">この内容を読み込む</button>
               </section>
             </div>
