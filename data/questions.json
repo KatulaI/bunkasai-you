@@ -1,32 +1,189 @@
 [
   {
-    "id": "intro-1",
-    "category": "retro-trend",
-    "prompt": "日本で一番面積が大きい都道府県はどこ？",
-    "choices": ["北海道", "岩手県", "長野県"],
+    "id": "trend-expired-1",
+    "category": "trend-expired",
+    "prompt": "友達を装ってはいるが、実際は裏で悪い噂を流したり、わざと足を引っ張ったりする人を表す言葉は？",
+    "choices": ["フレネミー", "カスコレ", "コレンドリーファイアマン"],
     "correctIndex": 0,
+    "image": "",
     "timeLimit": 15,
     "points": 100,
-    "explanation": "北海道は約83,000平方キロメートルで、日本の都道府県の中で最も広いです。"
+    "explanation": ""
   },
   {
-    "id": "intro-2",
+    "id": "trend-expired-2",
     "category": "trend-expired",
-    "prompt": "文化祭の定番メニューとしても人気の『たこ焼き』は、主にどの地域の名物？",
-    "choices": ["東北", "関東", "関西"],
-    "correctIndex": 2,
-    "timeLimit": 12,
+    "prompt": "「キュン」の上位互換として使われる言葉は？",
+    "choices": ["ギュン", "キュイン", "ボン"],
+    "correctIndex": 0,
+    "image": "",
+    "timeLimit": 15,
     "points": 100,
-    "explanation": "たこ焼きは大阪を中心とした関西の代表的な粉ものです。"
+    "explanation": ""
   },
   {
-    "id": "intro-3",
-    "category": "trend-song",
-    "prompt": "地球が太陽のまわりを1周するのにかかる時間として正しいのは？",
-    "choices": ["約24時間", "約30日", "約365日"],
-    "correctIndex": 2,
-    "timeLimit": 10,
+    "id": "trend-expired-3",
+    "category": "trend-expired",
+    "prompt": "この画像の名称は何？",
+    "choices": ["ぷっくりドロップシール", "ボンボンドロップシール", "エポキシドロップシール"],
+    "correctIndex": 1,
+    "image": "/question-images/current-trend-q3.png",
+    "timeLimit": 15,
     "points": 100,
-    "explanation": "地球は約365日かけて太陽のまわりを公転しています。"
+    "explanation": ""
+  },
+  {
+    "id": "trend-expired-4",
+    "category": "trend-expired",
+    "prompt": "「ほんまやで、（ ）、知らんけど」の空欄に入る言葉は？",
+    "choices": ["なんでやねん", "ごめんて", "もうええわ"],
+    "correctIndex": 0,
+    "image": "",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
+  },
+  {
+    "id": "trend-expired-5",
+    "category": "trend-expired",
+    "prompt": "次のSNSのうち、日本の高校生の利用者数がいちばん多いのはどれ？",
+    "choices": ["TikTok", "Instagram", "X（旧Twitter）"],
+    "correctIndex": 1,
+    "image": "",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
+  },
+  {
+    "id": "trend-expired-6",
+    "category": "trend-expired",
+    "prompt": "2026年W杯で、長友佑都の口から出た新しい名言は？",
+    "choices": ["グラッツェ", "マンマミーア", "フォルツァ"],
+    "correctIndex": 1,
+    "image": "",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
+  },
+  {
+    "id": "trend-expired-7",
+    "category": "trend-expired",
+    "prompt": "この中でいちばん多く使われている絵文字は？",
+    "choices": ["!", "❤️", "🥺"],
+    "correctIndex": 0,
+    "image": "",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
+  },
+  {
+    "id": "trend-song-1",
+    "category": "trend-song",
+    "prompt": "出典: 春に舞う / Ado\n答えを探すたびに（ ）君の香りがするの",
+    "choices": ["ほんのり", "ふんわり"],
+    "correctIndex": 1,
+    "image": "",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
+  },
+  {
+    "id": "trend-song-2",
+    "category": "trend-song",
+    "prompt": "出典: AIZO / King Knu\n廻れ廻れ時代の 生き恥に（ ）愛憎愛憎を喰らって",
+    "choices": ["つぶされて", "うずもれて", "ずぶぬれで"],
+    "correctIndex": 2,
+    "image": "",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
+  },
+  {
+    "id": "trend-song-3",
+    "category": "trend-song",
+    "prompt": "歌詞クイズ\n世界が驚く どいつもこいつも Crazy Crazy man（ ）CHARISMAX",
+    "choices": ["限界超えてゆく", "常識壊していく", "時代切り聞く"],
+    "correctIndex": 1,
+    "image": "",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
+  },
+  {
+    "id": "trend-song-4",
+    "category": "trend-song",
+    "prompt": "米津玄師の歌詞問題\n僕らは今日ただ 一羽の夢見がちな鳥になって 光を受けて続く この道を（ ）",
+    "choices": ["紡いでいく", "切り開いていく", "辿り直していく"],
+    "correctIndex": 2,
+    "image": "",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
+  },
+  {
+    "id": "trend-song-5",
+    "category": "trend-song",
+    "prompt": "出典: なんでやねん★知らんけど / ★ほんまやで / モナキ\nその全て I want you なんでやねん！ 強く抱きしめたくて（ ）",
+    "choices": ["おまえを", "あんたを", "今すぐ", "今だけ"],
+    "correctIndex": 0,
+    "image": "",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
+  },
+  {
+    "id": "retro-trend-1",
+    "category": "retro-trend",
+    "prompt": "出典: 2012年\nスギちゃんのギャグで、その年の流行語大賞にもなった言葉は？",
+    "choices": ["イケメンだろぉ！", "ビックリだろぉ！", "ワイルドだろぉ！"],
+    "correctIndex": 2,
+    "image": "",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
+  },
+  {
+    "id": "retro-trend-2",
+    "category": "retro-trend",
+    "prompt": "出典: 2015年\n「あったかいんだからぁ♪♪」で一躍ブレイクした芸人は？",
+    "choices": ["みのもんた", "クマムシ", "BKBバイク川崎バイク"],
+    "correctIndex": 1,
+    "image": "",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
+  },
+  {
+    "id": "retro-trend-3",
+    "category": "retro-trend",
+    "prompt": "出典: 2014年\n野々村議員の発言のピー音に入るセリフは？",
+    "choices": ["少子化問題高齢", "あなたにはわからんでしょーね", "政務調査費"],
+    "correctIndex": 0,
+    "image": "",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
+  },
+  {
+    "id": "retro-trend-4",
+    "category": "retro-trend",
+    "prompt": "出典: 2015年\n画像のキャラクターは何？",
+    "choices": ["ウミガメ", "アマビエ", "コロポックル"],
+    "correctIndex": 1,
+    "image": "/question-images/retro-q4.png",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
+  },
+  {
+    "id": "retro-trend-5",
+    "category": "retro-trend",
+    "prompt": "出典: 2025年\n画像のキャラクターは何？",
+    "choices": ["トゥントゥントゥンサコール", "ブルブルパクピン", "リリリラリラ"],
+    "correctIndex": 1,
+    "image": "/question-images/retro-q5.png",
+    "timeLimit": 15,
+    "points": 100,
+    "explanation": ""
   }
 ]

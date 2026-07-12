@@ -455,7 +455,20 @@ body[data-question-type="retro-trend"] .display-stage-simple::after {
   line-height: 1.14;
   letter-spacing: 0.01em;
   text-wrap: balance;
+  white-space: pre-line;
   max-width: 14ch;
+}
+
+.question-media {
+  margin: 10px 0 22px;
+}
+
+.question-media img {
+  display: block;
+  width: min(100%, 460px);
+  max-height: 320px;
+  object-fit: contain;
+  object-position: center;
 }
 
 body[data-question-type="trend-expired"] .quiz-headline,
@@ -485,7 +498,7 @@ body[data-question-type="retro-trend"] .display-stage-question {
 }
 
 .display-choices {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--choice-columns, 3), minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -1290,12 +1303,27 @@ textarea:focus-visible {
   letter-spacing: 0.01em;
   position: relative;
   z-index: 1;
+  white-space: pre-line;
   max-width: 13ch;
+}
+
+.display-question-media {
+  margin: 0 0 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.display-question-media img {
+  display: block;
+  width: min(100%, 620px);
+  max-height: 340px;
+  object-fit: contain;
+  object-position: center;
 }
 
 .display-stage-choices {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--choice-columns, 3), minmax(0, 1fr));
   gap: 14px;
 }
 

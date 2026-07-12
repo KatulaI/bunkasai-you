@@ -42,6 +42,7 @@ const elements = {
   statusDetail: document.getElementById("statusDetail"),
   questionMeta: document.getElementById("questionMeta"),
   displayQuestion: document.getElementById("displayQuestion"),
+  displayQuestionMedia: document.getElementById("displayQuestionMedia"),
   displayChoices: document.getElementById("displayChoices"),
   joinForm: document.getElementById("joinForm"),
   nameInput: document.getElementById("nameInput"),
@@ -240,6 +241,7 @@ function renderDisplay(quiz) {
   if (!question) {
     elements.questionMeta.textContent = "開始待ち";
     elements.displayQuestion.textContent = "司会者が問題を開始すると、ここに現在のクイズが大きく表示されます。";
+    renderQuestionMedia(elements.displayQuestionMedia, null);
     elements.displayChoices.innerHTML = "";
     elements.responseSummary.textContent = "問題が始まると、ここに回答状況が表示されます。";
     return;
@@ -247,6 +249,8 @@ function renderDisplay(quiz) {
 
   elements.questionMeta.textContent = `Q${quiz.currentQuestionIndex + 1} / ${quiz.totalQuestions} ・ ${questionCategoryLabel(question.category)}`;
   elements.displayQuestion.textContent = question.prompt;
+  renderQuestionMedia(elements.displayQuestionMedia, question);
+  elements.displayChoices.style.setProperty("--choice-columns", String(choiceColumnCount(question.choices.length)));
   const disabled = !joined || quiz.status !== "question" || !question.acceptingAnswers;
   elements.displayChoices.innerHTML = question.choices
     .map((choice, index) => {
@@ -520,6 +524,18 @@ function renderStatusStrip(quiz, question) {
   elements.statusDetail.textContent = "全問題が終了しました。最終結果を確認できます。";
 }
 
+function renderQuestionMedia(container, question) {
+  const image = question?.image?.trim();
+  if (!image) {
+    container.innerHTML = "";
+    container.classList.add("hidden");
+    return;
+  }
+
+  container.innerHTML = `<img src="${escapeHtml(image)}" alt="問題画像">`;
+  container.classList.remove("hidden");
+}
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -545,4 +561,14 @@ function questionCategoryLabel(category) {
     return "昔の流行チェック";
   }
   return "今の流行チェック";
+}
+
+function choiceColumnCount(choiceLength) {
+  if (choiceLength <= 2) {
+    return choiceLength;
+  }
+  if (choiceLength === 4) {
+    return 2;
+  }
+  return 3;
 }

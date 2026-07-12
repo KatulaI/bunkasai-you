@@ -24,6 +24,7 @@ const elements = {
   meta: document.getElementById("displayScreenMeta"),
   kicker: document.getElementById("displayScreenKicker"),
   question: document.getElementById("displayScreenQuestion"),
+  media: document.getElementById("displayScreenMedia"),
   choices: document.getElementById("displayScreenChoices")
 };
 
@@ -88,6 +89,7 @@ function renderQuestion(quiz) {
     elements.meta.textContent = quiz.status === "reveal" || quiz.status === "finished" ? "結果発表" : "開始待ち";
     elements.kicker.textContent = "次の問題";
     elements.question.textContent = "司会者が問題を開始すると、ここに問題が表示されます。";
+    renderQuestionMedia(null);
     elements.choices.innerHTML = "";
     return;
   }
@@ -100,6 +102,8 @@ function renderQuestion(quiz) {
       : "集計中";
   elements.kicker.textContent += ` ・ ${questionCategoryLabel(question.category)}`;
   elements.question.textContent = question.prompt;
+  renderQuestionMedia(question);
+  elements.choices.style.setProperty("--choice-columns", String(choiceColumnCount(question.choices.length)));
   elements.choices.innerHTML = question.choices
     .map((choice, index) => {
       const isCorrect = question.correctIndex === index && (quiz.status === "reveal" || quiz.status === "finished");
@@ -127,6 +131,18 @@ function loadSocketClient() {
   });
 }
 
+function renderQuestionMedia(question) {
+  const image = question?.image?.trim();
+  if (!image) {
+    elements.media.innerHTML = "";
+    elements.media.classList.add("hidden");
+    return;
+  }
+
+  elements.media.innerHTML = `<img src="${escapeHtml(image)}" alt="問題画像">`;
+  elements.media.classList.remove("hidden");
+}
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -144,4 +160,14 @@ function questionCategoryLabel(category) {
     return "昔の流行";
   }
   return "今の流行";
+}
+
+function choiceColumnCount(choiceLength) {
+  if (choiceLength <= 2) {
+    return choiceLength;
+  }
+  if (choiceLength === 4) {
+    return 2;
+  }
+  return 3;
 }

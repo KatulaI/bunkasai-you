@@ -17,6 +17,7 @@ const elements = {
   questionEditorForm: document.getElementById("questionEditorForm"),
   editorPrompt: document.getElementById("editorPrompt"),
   editorChoices: document.getElementById("editorChoices"),
+  editorImage: document.getElementById("editorImage"),
   editorCategory: document.getElementById("editorCategory"),
   editorCorrectIndex: document.getElementById("editorCorrectIndex"),
   editorPoints: document.getElementById("editorPoints"),
@@ -176,6 +177,7 @@ function bindEvents() {
   [
     elements.editorPrompt,
     elements.editorChoices,
+    elements.editorImage,
     elements.editorCorrectIndex,
     elements.editorCategory,
     elements.editorPoints,
@@ -329,6 +331,7 @@ function renderQuestionEditor(question) {
 
   elements.editorPrompt.value = question.prompt;
   elements.editorChoices.value = question.choices.join("\n");
+  elements.editorImage.value = question.image || "";
   elements.editorCategory.value = question.category || "trend-expired";
   elements.editorPoints.value = String(question.points ?? 100);
   elements.editorTimeLimit.value = String(question.timeLimit ?? 15);
@@ -352,8 +355,8 @@ function syncCorrectOptions(preferredIndex = 0) {
   const choices = parseChoices(elements.editorChoices.value);
   const selectedIndex = Math.max(0, Math.min(preferredIndex, Math.max(choices.length - 1, 0)));
 
-  if (choices.length !== 3) {
-    elements.editorCorrectIndex.innerHTML = "<option value=\"0\">選択肢を3つ入力してください</option>";
+  if (choices.length < 2) {
+    elements.editorCorrectIndex.innerHTML = "<option value=\"0\">選択肢を2つ以上入力してください</option>";
     elements.editorCorrectIndex.value = "0";
     return;
   }
@@ -372,6 +375,7 @@ function buildQuestionFromEditor(existingQuestion) {
   const prompt = elements.editorPrompt.value.trim();
   const choices = parseChoices(elements.editorChoices.value);
   const correctIndex = Number(elements.editorCorrectIndex.value);
+  const image = elements.editorImage.value.trim();
   const category = elements.editorCategory.value;
   const points = Number(elements.editorPoints.value || 100);
   const timeLimit = Number(elements.editorTimeLimit.value || 15);
@@ -382,8 +386,8 @@ function buildQuestionFromEditor(existingQuestion) {
     return null;
   }
 
-  if (choices.length !== 3) {
-    showToast("選択肢はちょうど3つ入力してください。", "error");
+  if (choices.length < 2) {
+    showToast("選択肢は2つ以上入力してください。", "error");
     return null;
   }
 
@@ -398,6 +402,7 @@ function buildQuestionFromEditor(existingQuestion) {
     category,
     choices,
     correctIndex,
+    image,
     points: Number.isFinite(points) ? points : 100,
     timeLimit: Number.isFinite(timeLimit) ? timeLimit : 15,
     explanation
@@ -539,10 +544,14 @@ function buildHeaderAliases() {
     choice1: ["選択肢1", "選択肢a", "choice1", "choicea", "a"],
     choice2: ["選択肢2", "選択肢b", "choice2", "choiceb", "b"],
     choice3: ["選択肢3", "選択肢c", "choice3", "choicec", "c"],
+    choice4: ["選択肢4", "選択肢d", "choice4", "choiced", "d"],
+    choice5: ["選択肢5", "選択肢e", "choice5", "choicee", "e"],
+    choice6: ["選択肢6", "選択肢f", "choice6", "choicef", "f"],
     correct: ["正解", "correct", "answer", "正答"],
     category: ["タイプ", "カテゴリ", "category", "genre", "種類"],
     points: ["点数", "points", "score", "pt"],
     timeLimit: ["秒数", "制限時間", "time", "timelimit", "time_limit"],
+    image: ["画像", "image", "img", "imageurl", "image_url", "画像url"],
     explanation: ["解説", "explanation", "comment", "補足"]
   };
 }
@@ -561,29 +570,32 @@ function normalizeImportedQuestionRow(row, headerInfo, index) {
   }
 
   const choices = [];
-  for (let choiceIndex = 0; choiceIndex < 3; choiceIndex += 1) {
+  for (let choiceIndex = 0; choiceIndex < 6; choiceIndex += 1) {
     const choice = getImportedCell(row, headerInfo, `choice${choiceIndex + 1}`, choiceIndex + 1).trim();
     if (choice) {
       choices.push(choice);
     }
   }
 
-  if (choices.length !== 3) {
-    throw new Error(`${index + 1}行目: 選択肢は3つちょうど必要です。`);
+  if (choices.length < 2) {
+    throw new Error(`${index + 1}行目: 選択肢は2つ以上必要です。`);
   }
 
-  const correctValue = getImportedCell(row, headerInfo, "correct", 4).trim();
-  const pointsValue = getImportedCell(row, headerInfo, "points", 6).trim();
-  const timeValue = getImportedCell(row, headerInfo, "timeLimit", 7).trim();
+  const correctValue = getImportedCell(row, headerInfo, "correct", 7).trim();
+  const pointsValue = getImportedCell(row, headerInfo, "points", 9).trim();
+  const timeValue = getImportedCell(row, headerInfo, "timeLimit", 10).trim();
+  const imageValue = getImportedImageCell(row, headerInfo).trim();
+  const explanationValue = getImportedExplanationCell(row, headerInfo).trim();
 
   return {
     prompt,
     choices,
     correctIndex: parseCorrectIndex(correctValue, choices, index),
-    category: normalizeImportedCategory(getImportedCell(row, headerInfo, "category", 5)),
+    category: normalizeImportedCategory(getImportedCell(row, headerInfo, "category", 8)),
     points: parseOptionalNumber(pointsValue, 100, 10),
     timeLimit: parseOptionalNumber(timeValue, 15, 5),
-    explanation: getImportedCell(row, headerInfo, "explanation", 8).trim()
+    image: imageValue,
+    explanation: explanationValue
   };
 }
 
@@ -591,6 +603,30 @@ function getImportedCell(row, headerInfo, key, fallbackIndex) {
   const mappedIndex = headerInfo.headerMap[key];
   const index = Number.isInteger(mappedIndex) ? mappedIndex : fallbackIndex;
   return String(row[index] || "");
+}
+
+function getImportedImageCell(row, headerInfo) {
+  if (Number.isInteger(headerInfo.headerMap.image)) {
+    return getImportedCell(row, headerInfo, "image", 11);
+  }
+
+  if (row.length >= 13) {
+    return String(row[11] || "");
+  }
+
+  return "";
+}
+
+function getImportedExplanationCell(row, headerInfo) {
+  if (Number.isInteger(headerInfo.headerMap.explanation)) {
+    return getImportedCell(row, headerInfo, "explanation", 12);
+  }
+
+  if (row.length >= 13) {
+    return String(row[12] || "");
+  }
+
+  return String(row[11] || "");
 }
 
 function parseCorrectIndex(value, choices, rowIndex) {
@@ -622,7 +658,7 @@ function parseCorrectIndex(value, choices, rowIndex) {
     return choiceIndex;
   }
 
-  throw new Error(`${rowIndex + 1}行目: 正解は A / B / C か、選択肢番号で入れてください。`);
+  throw new Error(`${rowIndex + 1}行目: 正解は A / B / C / D / E / F か、選択肢番号で入れてください。`);
 }
 
 function normalizeImportedCategory(value) {
@@ -649,9 +685,9 @@ function parseOptionalNumber(value, fallbackValue, minValue) {
 
 function buildImportTemplate() {
   return [
-    ["問題文", "選択肢1", "選択肢2", "選択肢3", "正解", "タイプ", "点数", "秒数", "解説"].join("\t"),
-    ["今いちばん使われがちなSNSは？", "BeReal", "mixi", "前略プロフィール", "A", "今", "100", "15", "最近のSNS感覚をチェックする問題です。"].join("\t"),
-    ["この中で最近の流行曲として最も近いものは？", "はいよろこんで", "世界に一つだけの花", "小さな恋のうた", "A", "曲", "100", "15", "曲ジャンルの例です。"].join("\t")
+    ["問題文", "選択肢1", "選択肢2", "選択肢3", "選択肢4", "選択肢5", "選択肢6", "正解", "タイプ", "点数", "秒数", "画像", "解説"].join("\t"),
+    ["今いちばん使われがちなSNSは？", "BeReal", "mixi", "前略プロフィール", "", "", "", "A", "今", "100", "15", "", "最近のSNS感覚をチェックする問題です。"].join("\t"),
+    ["この画像の名称は何？", "ぷっくりドロップシール", "ボンボンドロップシール", "エポキシドロップシール", "", "", "", "B", "今", "100", "15", "/question-images/sample.png", "画像問題の例です。"].join("\t")
   ].join("\n");
 }
 

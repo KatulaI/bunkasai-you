@@ -380,6 +380,7 @@ function createBlankQuestion(index = 0) {
     category: "trend-expired",
     choices: ["選択肢A", "選択肢B", "選択肢C"],
     correctIndex: 0,
+    image: "",
     timeLimit: 15,
     points: 100,
     explanation: ""
@@ -404,8 +405,8 @@ function validateQuestion(question, index = 0) {
     throw new Error(`${index + 1}問目の形式が不正です。`);
   }
 
-  if (!Array.isArray(question.choices) || question.choices.length !== 3) {
-    throw new Error(`${index + 1}問目は選択肢が3つ必要です。`);
+  if (!Array.isArray(question.choices) || question.choices.length < 2) {
+    throw new Error(`${index + 1}問目は選択肢が2つ以上必要です。`);
   }
 
   if (!Number.isInteger(question.correctIndex) || question.correctIndex < 0 || question.correctIndex >= question.choices.length) {
@@ -422,6 +423,7 @@ function validateQuestion(question, index = 0) {
     category,
     choices: question.choices.map((choice) => String(choice)),
     correctIndex: question.correctIndex,
+    image: typeof question.image === "string" ? question.image.trim() : "",
     timeLimit: Number.isFinite(timeLimit) ? Math.max(5, Math.min(120, Math.round(timeLimit))) : 15,
     points: Number.isFinite(points) ? Math.max(10, Math.round(points)) : 100,
     explanation: String(question.explanation || "")
@@ -506,6 +508,7 @@ function buildPublicState(socket) {
           prompt: question.prompt,
           category: question.category,
           choices: question.choices,
+          image: question.image,
           timeLimit: question.timeLimit,
           points: question.points,
           endsAt: quizState.questionEndsAt,
